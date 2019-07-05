@@ -5,10 +5,15 @@ var mongoose = require ('mongoose');
 var db = mongoose.connect('mongodb://localhost/swag-shop');
 
 var Product = require('./model/product');
-var product = require('./model/wishlist');
+var Wishlist = require('./model/wishlist');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
+
+app.get("/product", function(req,res){
+res.send("all is well");
+
+});
 
 app.post("/product", function(req,res) {
   var product = new Product();
