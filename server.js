@@ -12,18 +12,13 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-app.get("/product", function(req, res) {
-  Product.find({}, function(err, products) {
-    if (err) {
-      res.status(500).send({
-        error: "Could not fetch products"
-      });
-    } else {
-      res.send(products);
-    }
-  });
-});
 
+// ****************** WishList **************
+app.get('/wishlist', function(req, res) {
+  Wishlist.find({});
+
+  // Wishlist.find{};
+});
 
 app.post("/wishlist", function(req, res) {
   var wishList = new Wishlist();
@@ -39,6 +34,19 @@ app.post("/wishlist", function(req, res) {
 
   });
 });
+
+app.get("/product", function(req, res) {
+  Product.find({}, function(err, products) {
+    if (err) {
+      res.status(500).send({
+        error: "Could not fetch products"
+      });
+    } else {
+      res.send(products);
+    }
+  });
+});
+
 
 app.post("/product", function(req, res) {
   var product = new Product();
