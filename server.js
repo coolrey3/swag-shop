@@ -15,8 +15,13 @@ app.use(bodyParser.urlencoded({
 
 // ****************** WishList Get **************
 app.get('/wishlist', function(req, res) {
-  Wishlist.find({}, function(err, wishLists) {
-    res.send(wishLists);
+  Wishlist.find({}).populate({path:'products',model:'Product'}).exec(function(err,wishLists) {
+
+    if(err) {
+      res.status(500).send({error:"Could not fetch wishlists"});
+    } else {
+      res.send(wishLists);
+    }
 
   });
 
@@ -53,7 +58,7 @@ app.put('/wishlist/product/add', function(req, res) {
         if (err) {
           res.status(500).send({error: "Could not add item to wishlist"});
         } else {
-          res.send(wishList);
+          res.send("Successfully added product to wishlist!");
         }
 
       });
