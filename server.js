@@ -20,6 +20,7 @@ app.get('/wishlist', function(req, res) {
     model: 'Product'
   }).exec(function(err, wishLists) {
 
+
     if (err) {
       res.status(500).send({
         error: "Could not fetch wishlists"
@@ -27,6 +28,7 @@ app.get('/wishlist', function(req, res) {
     } else {
       res.send(wishLists);
     }
+
 
   });
 
