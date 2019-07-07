@@ -34,8 +34,6 @@ app.get('/food', function(req, res) {
       res.send(foodList);
     }
   });
-
-  // res.send(groceryList);
 });
 
 // *******************  POST  **************
@@ -55,26 +53,52 @@ app.post('/food', function(req, res) {
     }
   });
 });
-// groceryList.push(name);
-// res.send(groceryList);
 
-app.put('/:foodName', function(req, res) {
-  var foodName = req.param.foodName;
-  groceryList.push(foodName);
-  res.send(groceryList);
+
+
+// *****************  PUT  **********************
+app.put('/food',function(req,res) {
+  Food.findOne({_id:req.body.foodId}, function(err,food) {
+    if (err) {
+      res.status(500).send({error: "Could not add food to Groceries list"});
+  } else {
+    Food.update({_id:req.body.foodId},
+    {$addToSet:{foods:food._id}},
+    function(err,foodList) {
+    if (err) {
+      res.status(500).send({error: "Could not add item to foodList"});
+    } else {
+      res.send("Successfully added product to foodList!");
+    }
+
+  });
+  }
+  });
+
 });
+
+// app.put('/:foodName', function(req, res) {
+//   var foodName = req.param.foodName;
+//   groceryList.push(foodName);
+//   res.send(groceryList);
+// });
 
 // **************** DRINK ****************
 
-app.get('/drink',function(req,res) {
-    Drink.find({}).populate({path:'drinks', model:'Drink'}).exec(function(err,drinkList) {
-if (err) {
-  res.status(500).send({error:"unable to get drink list"});
-} else {
-  res.send(drinkList);
-}
-
-    });
+// ******************* GET ****************
+app.get('/drink', function(req, res) {
+  Drink.find({}).populate({
+    path: 'drinks',
+    model: 'Drink'
+  }).exec(function(err, drinkList) {
+    if (err) {
+      res.status(500).send({
+        error: "unable to get drink list"
+      });
+    } else {
+      res.send(drinkList);
+    }
+  });
 });
 
 // **************** POST ****************
@@ -92,9 +116,7 @@ app.post('/drink', function(req, res) {
       res.send(newDrink);
     }
   });
-
 });
-
 
 // *************** Start Server **************
 app.listen(3000, function() {
